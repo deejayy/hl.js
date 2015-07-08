@@ -92,6 +92,12 @@
       ],
 
       'include_dirs': [
+        '../metamod-1.20/metamod',
+        '../hlsdk-2.3-p4/multiplayer/dlls',
+        '../hlsdk-2.3-p4/multiplayer/pm_shared',
+        '../hlsdk-2.3-p4/multiplayer/common',
+        '../hlsdk-2.3-p4/multiplayer/engine',
+        '../v8/include',
         'src',
         'tools/msvs/genfiles',
         'deps/uv/src/ares',
@@ -100,6 +106,13 @@
       ],
 
       'sources': [
+        'src/hldsmod/node_hlds.cc',
+        'src/hldsmod/modcore.cpp',
+        'src/hldsmod/dllapi.cpp',
+        'src/hldsmod/engine_api.cpp',
+        'src/hldsmod/h_export.cpp',
+        'src/hldsmod/meta_api.cpp',
+        'src/hldsmod/sdk_util.cpp',
         'src/debug-agent.cc',
         'src/async-wrap.cc',
         'src/env.cc',
@@ -400,9 +413,10 @@
           ],
         }],
         [ 'OS=="freebsd" or OS=="linux"', {
-          'ldflags': [ '-Wl,-z,noexecstack',
-                       '-Wl,--whole-archive <(V8_BASE)',
-                       '-Wl,--no-whole-archive' ]
+          # 'ldflags': [ '-Wl,-z,noexecstack',
+          'ldflags': [ '-Wl,-shared,-z,noexecstack,--allow-multiple-definition',
+                       '-Wl,-shared,--whole-archive <(V8_BASE)',
+                       '-Wl,-shared,--no-whole-archive' ]
         }],
         [ 'OS=="sunos"', {
           'ldflags': [ '-Wl,-M,/usr/lib/ld/map.noexstk' ],
