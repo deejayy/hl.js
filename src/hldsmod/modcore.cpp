@@ -66,28 +66,10 @@ static void StartNodeInstanceMe() {
 }
 
 void io_StartFrame (void) {
-	// UTIL_LogPrintf("io_StartFrame online: %d\n", runnable);
-
 	if (runnable) {
-//		StartNodeInstanceMe();
-/*
-		v8::platform::PumpMessageLoop(default_platform, isolate);
-		more = uv_run(env->event_loop(), UV_RUN_ONCE);
-
-		if (more == false) {
-			v8::platform::PumpMessageLoop(default_platform, isolate);
-			node::EmitBeforeExit(env);
-
-			more = uv_loop_alive(env->event_loop());
-			if (uv_run(env->event_loop(), UV_RUN_NOWAIT) != 0)
-			more = true;
-		}
-*/
 		v8::platform::PumpMessageLoop(default_platform, isolate);
 		uv_run(env->event_loop(), UV_RUN_NOWAIT);
 	}
-
-	// UTIL_LogPrintf("done 1 cycle\n");
 
 	SET_META_RESULT(MRES_IGNORED);
 }
@@ -98,11 +80,7 @@ void io_GameInit (void) {
 	char *argv[] = {"node", "/root/dev/_test.js", NULL};
 	int argc = sizeof(argv) / sizeof(char*) - 1;
 
-//  node::Start volt
-
 	CHECK_GT(argc, 0);
-
-	// argv = uv_setup_args(argc, argv);
 
 	node::Init(&argc, const_cast<const char**>(argv), &exec_argc, &exec_argv);
 
@@ -116,8 +94,6 @@ void io_GameInit (void) {
 	instance_data = new node::NodeInstanceData(node::NodeInstanceType::MAIN, uv_default_loop(), argc, const_cast<const char**>(argv), exec_argc, exec_argv, false);
 
 	UTIL_LogPrintf("new node::NodeInstanceData ok.\n");
-
-//  node::StartNodeInstance volt
 
 	isolate = Isolate::New();
 	if (instance_data->is_main()) node_isolate = isolate;
@@ -139,58 +115,11 @@ void io_GameInit (void) {
 
 	SealHandleScope seal(isolate);
 
-//  itt kezdodne a loop
-
-	//StartNodeInstanceMe();
 	runnable = true;
-	//io_StartFrame();
-
-//  itt a vege
 
 	SET_META_RESULT(MRES_IGNORED);
 }
 
 void io_ServerDeactivate (void) {
-/*
-	runnable = false;
-
-	v8::platform::PumpMessageLoop(default_platform, isolate);
-	node::EmitBeforeExit(env);
-
-	uv_loop_alive(env->event_loop());
-	if (uv_run(env->event_loop(), UV_RUN_NOWAIT) != 0)
-*/
-//  node::StartNodeInstance volt
-/*
-	env->set_trace_sync_io(false);
-
-	int exit_code = node::EmitExit(env);
-	if (instance_data->is_main())
-	instance_data->set_exit_code(exit_code);
-	node::RunAtExit(env);
-
-	env->Dispose();
-	env = nullptr;
-
-	CHECK_NE(isolate, nullptr);
-	// isolate->Dispose();
-	isolate = nullptr;
-	if (instance_data->is_main())
-	node_isolate = nullptr;
-*/
-//  node::Start volt
-/*
-	exit_code = instance_data->exit_code();
-
-	V8::Dispose();
-
-	delete default_platform;
-	default_platform = nullptr;
-
-	delete[] exec_argv;
-	exec_argv = nullptr;
-*/
-//  normal meta resz
-
 	SET_META_RESULT(MRES_IGNORED);
 }
